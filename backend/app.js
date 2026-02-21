@@ -10,11 +10,8 @@ import userRoutes from './routes/userRoutes.js';
 
 dotenv.config();
 const app = express();
-app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5174', credentials: true }));
-app.use(cors({
-  origin: "https://ims-frontend.onrender.com",
-  credentials: true
-}));
+app.use(cors({ origin: process.env.FRONTEND_URL || 'https://institute-management-system-1.onrender.com', credentials: true }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.get('/health', (req, res) => res.json({ success: true, message: 'Server running' }));
