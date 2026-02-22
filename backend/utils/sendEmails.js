@@ -7,15 +7,29 @@ apiKey.apiKey = process.env.BREVO_API_KEY;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
 export const sendVerificationEmail = async (email, name, code) => {
+  if (!email || !email.includes("@")) {
+    console.log("Invalid email passed:", email);
+    throw new Error("Invalid email format");
+  }
+
+  const cleanEmail = email.trim().toLowerCase();
+
   const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
-  sendSmtpEmail.to = [{ email: email, name: name }];
+  sendSmtpEmail.to = [
+    {
+      email: cleanEmail,
+      name: name || "User",
+    },
+  ];
+
   sendSmtpEmail.sender = {
-    email: "yashpaithane2004@gmail.com",
+    email: "yashpaithane2004@gmail.com", // MUST be verified in Brevo
     name: "Institute Management System",
   };
+
   sendSmtpEmail.subject = "Verify Your Email - Institute Management System";
-  sendSmtpEmail.htmlContent = `
+  sendSmtpEmail.htmlContent  = `
     <!DOCTYPE html>
     <html lang="en">
     <head>
