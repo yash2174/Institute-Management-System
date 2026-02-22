@@ -9,7 +9,7 @@ const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 export const sendVerificationEmail = async (email, name, code) => {
   const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
-  sendSmtpEmail.to = [{ email }];
+  sendSmtpEmail.to = [{ email: email, name: name }];
   sendSmtpEmail.sender = {
     email: "yashpaithane2004@gmail.com",
     name: "Institute Management System",
