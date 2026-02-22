@@ -10,50 +10,61 @@ export const register = async (req, res) => {
     const { name, email, password, phone, address } = req.body;
 
     const passwordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-if (!passwordRegex.test(password)) {
-  return res.status(400).json({
-    success: false,
-    message:
-      "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.",
-  });
-}
-
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.",
+      });
+    }
 
     const existing = await pool.query(
       "SELECT * FROM users WHERE email = $1",
       [email]
     );
-    if (existing.rows.length > 0)
-      return res.status(400).json({ success: false, message: "Email already exists" });
+
+    if (existing.rows.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already exists",
+      });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const verificationCode = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString();
+
     const expiry = new Date(Date.now() + 10 * 60 * 1000);
 
-    const result = await pool.query(
+    await pool.query(
       `INSERT INTO users 
-       (name, email, password, role, phone, address, verification_code, verification_expires) 
-       VALUES ($1, $2, $3, 'student', $4, $5, $6, $7) 
-       RETURNING *`,
+       (name, email, password, role, phone, address, verification_code, verification_expires, is_verified) 
+       VALUES ($1, $2, $3, 'student', $4, $5, $6, $7, false)`,
       [name, email, hashedPassword, phone, address, verificationCode, expiry]
     );
 
+    console.log("Sending OTP to:", email); // ✅ INSIDE TRY
+
     await sendVerificationEmail(email, name, verificationCode);
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "Registration successful. Please verify your email.",
     });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Registration failed" });
-  }
-  console.log("Sending OTP to:", email);
 
+  } catch (error) {
+    console.error("REGISTER ERROR:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Registration failed",
+    });
+  }
 };
+
 
 export const login = async (req, res) => {
   try {
