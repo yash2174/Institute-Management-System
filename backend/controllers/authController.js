@@ -126,7 +126,7 @@ export const verifyEmail = async (req, res) => {
 
     const user = result.rows[0];
 
-    if (user.verification_code !== code)
+    if (String(user.verification_code) !== String(code))
       return res.status(400).json({ success: false, message: "Invalid code" });
 
     if (new Date(user.verification_expires) < new Date())
