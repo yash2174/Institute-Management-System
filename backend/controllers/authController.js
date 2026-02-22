@@ -129,6 +129,12 @@ export const verifyEmail = async (req, res) => {
   try {
     const { email, code } = req.body;
 
+    // DEBUG LOGS — remove after fixing
+    console.log("=== VERIFY DEBUG ===");
+    console.log("email:", email);
+    console.log("code from frontend:", JSON.stringify(code));
+    console.log("code type:", typeof code);
+
     const result = await pool.query(
       "SELECT * FROM users WHERE email = $1",
       [email]
@@ -139,19 +145,27 @@ export const verifyEmail = async (req, res) => {
 
     const user = result.rows[0];
 
-    if (String(user.verification_code) !== String(code))
+    // DEBUG LOGS
+    console.log("db code:", JSON.stringify(user.verification_code));
+    console.log("db code type:", typeof user.verification_code);
+    console.log("db is_verified:", user.is_verified);
+    console.log("db expires:", user.verification_expires);
+    console.log("strict match:", user.verification_code === code);
+    console.log("string match:", String(user.verification_code) === String(code));
+    console.log("trimmed match:", String(user.verification_code).trim() === String(code).trim());
+    console.log("====================");
+
+    if (String(user.verification_code).trim() !== String(code).trim())
       return res.status(400).json({ success: false, message: "Invalid code" });
 
     if (new Date(user.verification_expires) < new Date())
       return res.status(400).json({ success: false, message: "Code expired" });
 
-    // Update user as verified
     await pool.query(
       "UPDATE users SET is_verified = true, verification_code = NULL, verification_expires = NULL WHERE email = $1",
       [email]
     );
 
-    // Generate token immediately
     const token = generateToken(user);
 
     res.json({
@@ -166,10 +180,10 @@ export const verifyEmail = async (req, res) => {
     });
 
   } catch (error) {
+    console.error("VERIFY ERROR:", error);
     res.status(500).json({ success: false, message: "Verification failed" });
   }
 };
-
 
 
 export const getProfile = async (req, res) => {
