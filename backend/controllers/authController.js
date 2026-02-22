@@ -51,6 +51,8 @@ if (!passwordRegex.test(password)) {
     console.error(error);
     res.status(500).json({ success: false, message: "Registration failed" });
   }
+  console.log("Sending OTP to:", email);
+
 };
 
 export const login = async (req, res) => {
