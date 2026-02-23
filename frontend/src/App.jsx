@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import MainLayout from "./layouts/MainLayout";
@@ -31,7 +31,7 @@ import { Toaster } from "react-hot-toast";
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
        <Toaster position="top-center" />
       <AuthProvider>
         <Routes>
@@ -85,6 +85,6 @@ export default function App() {
 
         </Routes>
       </AuthProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
