@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link ,useLocation } from "react-router-dom";
 import Loading from "../../components/Loading";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
@@ -10,6 +10,7 @@ import { Trophy } from "lucide-react";
 
 export default function StudentDashboard() {
   const { user } = useAuth();
+  const location = useLocation();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
     totalEnrollments: 0,
@@ -45,6 +46,17 @@ fetchLeaderboard();
 
     fetchStats();
   }, []);
+
+
+  useEffect(() => {
+  const params = new URLSearchParams(location.search);
+  if (params.get("scroll") === "leaderboard") {
+    const el = document.getElementById("leaderboard");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+}, [location]);
 
   if (loading) return <Loading />;
 

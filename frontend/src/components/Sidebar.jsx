@@ -122,7 +122,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                 Community
               </p>
               <a
-                href="/student/dashboard#leaderboard"
+                href="/student/dashboard?scroll=leaderboard"
                 onClick={() => { if (window.innerWidth < 768 && toggleSidebar) toggleSidebar(); }}
                 className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-all duration-150 group"
               >
