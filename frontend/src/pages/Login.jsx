@@ -19,7 +19,7 @@ export default function AdminLogin() {
       const data = await login(form);
       if (data.success) {
         toast.success("Welcome back, Admin 🛡️");
-        navigate("/admin/dashboard");
+        navigate("/#/admin/dashboard");
       } else {
         toast.error(data.message || "Login failed");
       }
