@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
   const login = async (credentials) => {
-    const res = await fetch('https://institute-management-system-3yxk.onrender.com/api/auth/login', {
+    const res = await fetch('https://institute-management-system-1.onrender.com/#/student/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials)
