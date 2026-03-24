@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
   const login = async (credentials) => {
-    const res = await fetch('https://institute-management-system-3yxk.onrender.com/api', {
+    const res = await fetch('https://institute-management-system-3yxk.onrender.com/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials)
@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
   const register = async (userData) => {
-    const res = await fetch('https://institute-management-system-3yxk.onrender.com/api', {
+    const res = await fetch('https://institute-management-system-3yxk.onrender.com/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData)
