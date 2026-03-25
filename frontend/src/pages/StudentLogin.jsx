@@ -19,7 +19,7 @@ export default function StudentLogin() {
       const data = await login(form);
       if (data.success) {
         toast.success("Login successful 🎓");
-        navigate("/#/student/dashboard");
+         window.location.href = "/#/student/dashboard";
       } else {
         toast.error(data.message || "Login failed");
       }
