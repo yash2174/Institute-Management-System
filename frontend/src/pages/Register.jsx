@@ -68,7 +68,7 @@ export default function Register() {
       toast.success("Email verified successfully 🎓");
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
-      window.location.href = "/#/student/dashboard";
+      navigate("/student/dashboard");
     } catch (err) {
       toast.error(err.response?.data?.message || "Verification failed");
     }
