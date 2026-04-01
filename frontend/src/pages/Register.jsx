@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
+
 import {
   Eye, EyeOff, UserPlus, Mail, Lock, User,
   Phone, MapPin, ChevronRight, ArrowLeft, ShieldCheck,
@@ -9,6 +11,7 @@ import toast from "react-hot-toast";
 
 export default function Register() {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
