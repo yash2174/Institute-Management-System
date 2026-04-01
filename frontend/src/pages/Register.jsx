@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 import api from "../services/api";
 
@@ -10,8 +10,7 @@ import {
 import toast from "react-hot-toast";
 
 export default function Register() {
-  const navigate = useNavigate();
-  const { setUser } = useAuth();
+  
 
   const [formData, setFormData] = useState({
     name: "",
